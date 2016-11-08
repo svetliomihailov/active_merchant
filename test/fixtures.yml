@@ -38,6 +38,11 @@ bank_frick:
   userid: user-uuid
   userpwd: password
 
+# Working credentials, no need to replace
+bank_of_ireland:
+  some_credential: SOMECREDENTIAL
+  another_credential: ANOTHERCREDENTIAL
+
 banwire:
   login: "desarrollo"
 
