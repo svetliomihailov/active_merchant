@@ -4,21 +4,41 @@ module ActiveMerchant #:nodoc:
       self.test_url = 'https://example.com/test'
       self.live_url = 'https://example.com/live'
 
-      self.supported_countries = ['US']
-      self.default_currency = 'USD'
+      self.supported_countries = ['IE']
+      self.default_currency    = 'EUR'
       self.supported_cardtypes = [:visa, :master]
+      self.money_format        = :dollars
 
       self.homepage_url = 'http://www.example.net/'
       self.display_name = 'New Gateway'
 
       STANDARD_ERROR_CODE_MAPPING = {}
 
+      TRANSLATION = {
+        origin_url: 'allowOriginUrl',
+        merchant_id: 'merchantId',
+      }.freeze
+
       def initialize(options={})
-        requires!(options, :some_credential, :another_credential)
+        requires!(options, :merchant_id, :password, :origin_url)
         super
       end
 
-      def purchase(money, payment, options={})
+      def tokenize(credit_card, options = {})
+        post = {
+          'merchantId' => @options[:merchant_id],
+          'password' => @options[:password],
+          'action' => 'TOKENIZE',
+          'timestamp' => options[:timestamp],
+          'customerId' => 'not present this one..'
+          'allowOriginUrl' => @options[:origin_url]
+        }
+
+        # TODO: make a request for a session token and get it!
+        # TODO: make the tokenize request.
+      end
+
+      def purchase(money, payment, options = {})
         post = {}
         add_invoice(post, money, options)
         add_payment(post, payment)
